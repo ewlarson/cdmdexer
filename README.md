@@ -1,10 +1,8 @@
 [![Build Status](https://travis-ci.org/UMNLibraries/cdmdexer.svg?branch=master)](https://travis-ci.org/UMNLibraries/cdmdexer)
 
-# CDMDEXER: CONTENTdm on Blacklight
+# CDMDEXER: Index CONTENTdm Content Into Solr (or other)
 
-Use [Blacklight](https://github.com/projectblacklight/blacklight) as a front end for your CONTENTdm instance.
-
-At the moment, CDMDEXER consists only of a micro [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) system dedicated to extracting metadata records from a CONTENTdm instance (using the [CONTENTdm API gem](https://github.com/UMNLibraries/contentdm_api), transforming them into Solr documents, and loading them into Solr.
+A micro [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) system dedicated to extracting metadata records from a CONTENTdm instance (using the [CONTENTdm API gem](https://github.com/UMNLibraries/contentdm_api), transforming them into Solr documents, and loading them into Solr.
 
 ## Installation
 
@@ -75,7 +73,6 @@ namespace :cdmdexer do
         oai_endpoint: 'http://cdm16022.contentdm.oclc.org/oai/oai.php',
         cdm_endpoint: 'https://server16022.contentdm.oclc.org/dmwebservices/index.php',
         set_spec: (args[:set_spec] != '""') ? args[:set_spec] : nil,
-        max_compounds: (args[:max_compounds]) ? args[:max_compounds] : 2,
         batch_size: (args[:batch_size]) ? args[:batch_size] : 30,
         solr_config: solr_config
       }
