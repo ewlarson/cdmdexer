@@ -44,7 +44,7 @@ module CDMDEXER
     end
 
     def deletable_ids
-      records.filter { |record| record['status'] == 'deleted' }
+      records.select { |record| record['status'] == 'deleted' }
              .map { |record| record[:id] }
     end
 
