@@ -27,7 +27,7 @@ module CDMDEXER
         oai_endpoint = 'example.com'
         oai_request_klass = Minitest::Mock.new
         oai_request_obj = Minitest::Mock.new
-        oai_request_klass.expect :new, oai_request_obj, [base_uri: oai_endpoint]
+        oai_request_klass.expect :new, oai_request_obj, [endpoint_url: oai_endpoint]
         oai_request_obj.expect :sets, { 'foo' => { bar: 'ba' } }, []
 
         records = Transformer.new(cdm_records: cdm_records, cache_klass: FakeCache, oai_request_klass: oai_request_klass).records
@@ -51,7 +51,7 @@ module CDMDEXER
       oai_endpoint = 'example.com'
       oai_request_klass = Minitest::Mock.new
       oai_request_obj = Minitest::Mock.new
-      oai_request_klass.expect :new, oai_request_obj, [base_uri: oai_endpoint]
+      oai_request_klass.expect :new, oai_request_obj, [endpoint_url: oai_endpoint]
       oai_request_obj.expect :sets, { 'foo' => { bar: 'ba' } }, []
 
       transformation =  Transformer.new(cdm_records: records, field_mappings: field_mappings, cache_klass: FakeCache, oai_request_klass: oai_request_klass).records.first
@@ -71,7 +71,7 @@ module CDMDEXER
       oai_endpoint = 'example.com'
       oai_request_klass = Minitest::Mock.new
       oai_request_obj = Minitest::Mock.new
-      oai_request_klass.expect :new, oai_request_obj, [base_uri: oai_endpoint]
+      oai_request_klass.expect :new, oai_request_obj, [endpoint_url: oai_endpoint]
       oai_request_obj.expect :sets, { 'foo' => { bar: 'ba' } }, []
 
       transformation =  Transformer.new(cdm_records: records, field_mappings: field_mappings, cache_klass: FakeCache, oai_request_klass: oai_request_klass).records.first
@@ -91,7 +91,7 @@ module CDMDEXER
         oai_endpoint = 'example.com'
         oai_request_klass = Minitest::Mock.new
         oai_request_obj = Minitest::Mock.new
-        oai_request_klass.expect :new, oai_request_obj, [base_uri: oai_endpoint]
+        oai_request_klass.expect :new, oai_request_obj, [endpoint_url: oai_endpoint]
         oai_request_obj.expect :sets, { 'foo' => { bar: 'ba' } }, []
 
         transformation =  Transformer.new(cdm_records: records, field_mappings: field_mappings, cache_klass: FakeCache, oai_request_klass: oai_request_klass).records.first
@@ -113,7 +113,7 @@ module CDMDEXER
         oai_endpoint = 'example.com'
         oai_request_klass = Minitest::Mock.new
         oai_request_obj = Minitest::Mock.new
-        oai_request_klass.expect :new, oai_request_obj, [base_uri: oai_endpoint]
+        oai_request_klass.expect :new, oai_request_obj, [endpoint_url: oai_endpoint]
         oai_request_obj.expect :sets, { 'foo' => { bar: 'ba' } }, []
 
         transformation =  Transformer.new(cdm_records: records, field_mappings: field_mappings, cache_klass: FakeCache, oai_request_klass: oai_request_klass).records.first
@@ -132,7 +132,7 @@ module CDMDEXER
           oai_endpoint = 'example.com'
           oai_request_klass = Minitest::Mock.new
           oai_request_obj = Minitest::Mock.new
-          oai_request_klass.expect :new, oai_request_obj, [base_uri: oai_endpoint]
+          oai_request_klass.expect :new, oai_request_obj, [endpoint_url: oai_endpoint]
           oai_request_obj.expect :sets, { 'foo' => { bar: 'ba' } }, []
 
           transformation =  Transformer.new(cdm_records: records, field_mappings: mappings, cache_klass: FakeCache, oai_request_klass: oai_request_klass)
