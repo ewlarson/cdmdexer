@@ -54,6 +54,7 @@ module CDMDEXER
 
     private
 
+    # TODO: Add some error handling if this ever turns up empty
     def headers
       force_array identifier_request.at_path('OAI_PMH/ListIdentifiers/header')
     end
