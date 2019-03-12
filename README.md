@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/UMNLibraries/cdmdexer.svg?branch=master)](https://travis-ci.org/UMNLibraries/cdmdexer)
 
-# CDMDEXER: Index CONTENTdm Content Into Solr (or other)
+# CDMDEXER: Index CONTENTdm Content
 
 A micro [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) system dedicated to extracting metadata records from a CONTENTdm instance (using the [CONTENTdm API gem](https://github.com/UMNLibraries/contentdm_api), transforming them into Solr documents, and loading them into Solr.
 
