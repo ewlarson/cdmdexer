@@ -19,15 +19,24 @@ module CDMDEXER
     end
 
     def to_h
-      @to_h ||= metadata.merge 'page' => page
+      @to_h ||=
+        # Keep the record metadata we have. It will include the compoud
+        # data such as parent_id
+        record.merge(metadata.merge(
+          'page' => page,
+          # When an item has pages, these pages are resubmitted to CdmItem
+          # as records in order to get their full metadata. But we want to
+          # remember that they are actually secondary / child pages
+          'record_type' => record.fetch('record_type', 'primary')
+        ))
     end
-
-    private
 
     def page
       metadata.fetch('page', [])
               .each_with_index.map { |page, i| to_compound(page, i) }
     end
+
+    private
 
     def to_compound(page, i)
       page.merge!(
@@ -45,7 +54,6 @@ module CDMDEXER
       @metadata ||= cdm_api_klass.new(base_url: cdm_endpoint,
                                       collection: collection,
                                       id: id).metadata
-                                 .merge('record_type' => 'primary')
     end
   end
 end
