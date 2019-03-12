@@ -9,20 +9,19 @@ module CDMDEXER
     let(:oai_request_klass_object) { Minitest::Mock.new }
     let(:load_worker_klass) { Minitest::Mock.new }
     let(:transform_worker_klass) { Minitest::Mock.new }
-    let(:batch_size) { 10 }
     let(:config) do
       {
         'cdm_endpoint' => 'http://example.com',
         'oai_endpoint' => 'http://example.com1',
         'max_compounds' => 10,
         'is_recursive' => true,
-        'batch_size' => 2,
+        'batch_size' => 1,
         'solr_config' => { blah: 'blah' }
       }
     end
 
     it 'correctly uses its collaborators' do
-      etl_worker_klass.expect :perform_async, nil, [{"cdm_endpoint"=>"http://example.com", "oai_endpoint"=>"http://example.com1", "max_compounds"=>10, "is_recursive"=>true, "batch_size"=>2, "solr_config"=>{:blah=>"blah"}, :resumption_token=>"coll:21112niner123"}]
+      etl_worker_klass.expect :perform_async, nil, [{"cdm_endpoint"=>"http://example.com", "oai_endpoint"=>"http://example.com1", "max_compounds"=>10, "is_recursive"=>true, "batch_size"=>1, "solr_config"=>{:blah=>"blah"}, :resumption_token=>"coll:21112niner123"}]
       oai_request_klass.expect :new,
                              oai_request_klass_object,
                              [
@@ -33,7 +32,7 @@ module CDMDEXER
                                }
                              ]
       oai_request_klass_object.expect :deletable_ids, ['col134:blarg'], []
-      oai_request_klass_object.expect :updatables, [{foo: 'bar'}], []
+      oai_request_klass_object.expect :updatables, [{foo: 'bar'}, {baz: 'lol'}], []
       oai_request_klass_object.expect :next_resumption_token, 'coll:21112niner', []
       oai_request_klass_object.expect :next_resumption_token, 'coll:21112niner123', []
 
@@ -41,7 +40,8 @@ module CDMDEXER
       load_worker_klass.expect :perform_async, nil, [[], ["col134:blarg"], {:blah=>'blah'}]
       # Since we have configured the extractor to process batches of two
       # the small record batches will be processed in two goes
-      transform_worker_klass.expect :perform_async, '', [[{:foo=>"bar"}], {:blah=>"blah"}, "http://example.com", "http://example.com1", false, 2]
+      transform_worker_klass.expect :perform_async, '', [[{:foo=>"bar"}], {:blah=>"blah"}, "http://example.com", "http://example.com1", false, 1]
+      transform_worker_klass.expect :perform_async, '', [[{:baz=>"lol"}], {:blah=>"blah"}, "http://example.com", "http://example.com1", false, 1]
 
       worker = ETLWorker.new
       worker.etl_worker_klass = etl_worker_klass

@@ -96,12 +96,14 @@ module CDMDEXER
     end
 
     def transform_and_load!
-      transform_worker_klass.perform_async(updatables,
-                                           solr_config,
-                                           cdm_endpoint,
-                                           oai_endpoint,
-                                           field_mappings,
-                                           batch_size)
+      updatables.each_slice(batch_size) do |records|
+        transform_worker_klass.perform_async(records,
+                                            solr_config,
+                                            cdm_endpoint,
+                                            oai_endpoint,
+                                            field_mappings,
+                                            batch_size)
+      end
     end
 
     def delete_deletables!
