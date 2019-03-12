@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class CDMBLTest < Minitest::Test
+class CDMDEXERTest < Minitest::Test
   def test_that_it_has_a_version_number
-    refute_nil ::CDMBL::VERSION
+    refute_nil ::CDMDEXER::VERSION
   end
 end

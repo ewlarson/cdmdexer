@@ -1,7 +1,7 @@
 require 'test_helper'
 
 
-module CDMBL
+module CDMDEXER
 
   describe FilteredSetSpecs do
 

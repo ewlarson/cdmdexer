@@ -1,5 +1,5 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'cdmbl'
+require 'cdmdexer'
 
 require 'minitest/autorun'
 require 'minitest/pride'
@@ -13,7 +13,7 @@ require 'rails'
 ENV['BACKTRACE'] = 'YES '
 
 # Avoid testing solr itself
-module CDMBL
+module CDMDEXER
 
   class TestConnection
     def get(query, params)

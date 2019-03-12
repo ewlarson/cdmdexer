@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module CDMBL
+module CDMDEXER
 
   describe FieldTransformer do
     let(:formatter) { Minitest::Mock.new }
@@ -9,7 +9,7 @@ module CDMBL
     let(:record) { { 'title' => '  The Stars My Destination  ' } }
 
     it 'calls the field formatter for each mapping' do
-      formatter.expect :new, formatter_object, [{:value=>'  The Stars My Destination  ', :formatters=>[CDMBL::DefaultFormatter]}]
+      formatter.expect :new, formatter_object, [{:value=>'  The Stars My Destination  ', :formatters=>[CDMDEXER::DefaultFormatter]}]
       formatter_object.expect :format!, 'The Stars My Destination'
       field_mapping.expect :origin_path, 'title', []
       field_mapping.expect :dest_path, 'title_ssi', []

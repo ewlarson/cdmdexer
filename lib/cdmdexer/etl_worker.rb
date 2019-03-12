@@ -1,5 +1,5 @@
 require 'sidekiq'
-module CDMBL
+module CDMDEXER
   # Extract records from OAI, delete records marked for deletion
   # and send everything else to a transformation / load worker
   class ETLWorker
@@ -53,7 +53,7 @@ module CDMBL
     # for dependencies (normally these would be default params in the
     # constructor) so that they may be mocked and tested
     def completed_callback_klass
-      @completed_callback_klass ||= CDMBL::CompletedCallback
+      @completed_callback_klass ||= CDMDEXER::CompletedCallback
     end
 
     def etl_worker_klass

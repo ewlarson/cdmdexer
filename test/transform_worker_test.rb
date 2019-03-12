@@ -2,7 +2,7 @@ require 'test_helper'
 require 'sidekiq/testing'
 Sidekiq::Testing.fake!
 
-module CDMBL
+module CDMDEXER
   describe TransformWorkerTest do
     it 'processes an array of items' do
       #  CdmItem Mocks

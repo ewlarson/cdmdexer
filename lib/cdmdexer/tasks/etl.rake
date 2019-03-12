@@ -1,6 +1,6 @@
-require 'cdmbl'
+require 'cdmdexer'
 
-namespace :cdmbl do
+namespace :cdmdexer do
 
 
 
@@ -8,7 +8,7 @@ namespace :cdmbl do
   task :collection_sync do
     # config = etl.config
     # raise etl.config.keys.inspect
-    CDMBL::ETLWorker.new.perform(
+    CDMDEXER::ETLWorker.new.perform(
       'solr_config' => {:url=>"http://solr:8983/solr/mdl-1"},
       'oai_endpoint' => 'http://cdm16022.contentdm.oclc.org/oai/oai.php',
       'cdm_endpoint' => 'https://server16022.contentdm.oclc.org/dmwebservices/index.php',
@@ -28,7 +28,7 @@ namespace :cdmbl do
     :batch_size,
     :max_compounds
   ] do |t, args|
-    CDMBL::ETLWorker.perform_async(
+    CDMDEXER::ETLWorker.perform_async(
       solr_config: { url: args.fetch(:solr_url) },
       oai_endpoint: args.fetch(:oai_endpoint),
       cdm_endpoint: args.fetch(:cdm_endpoint),
@@ -56,13 +56,13 @@ namespace :cdmbl do
     # Use the RegexFilterCallback as an example of how to build your own filter
     set_specs =
       if pattern
-        filter = CDMBL::RegexFilterCallback.new(field: 'setName',
+        filter = CDMDEXER::RegexFilterCallback.new(field: 'setName',
                                                 pattern: Regexp.new(pattern),
                                                 inclusive: inclusive)
-        CDMBL::FilteredSetSpecs.new(oai_base_url: oai_endpoint,
+        CDMDEXER::FilteredSetSpecs.new(oai_base_url: oai_endpoint,
                                     callback: filter).set_specs
       else
-        CDMBL::FilteredSetSpecs.new(oai_base_url: oai_endpoint).set_specs
+        CDMDEXER::FilteredSetSpecs.new(oai_base_url: oai_endpoint).set_specs
       end
 
     puts "Indexing Sets: '#{set_specs.join(', ')}'"
@@ -75,7 +75,7 @@ namespace :cdmbl do
       max_compounds: args.fetch(:max_compounds, 10)
     }
 
-    CDMBL::ETLBySetSpecs.new(set_specs: set_specs, etl_config: etl_config).run!
+    CDMDEXER::ETLBySetSpecs.new(set_specs: set_specs, etl_config: etl_config).run!
   end
 
   desc 'Launch a background job to index a single record.'
@@ -86,7 +86,7 @@ namespace :cdmbl do
     :cdm_endpoint,
     :oai_endpoint
   ] do |t, args|
-    CDMBL::TransformWorker.perform_async(
+    CDMDEXER::TransformWorker.perform_async(
       [[args.fetch(:collection), args.fetch(:id)]],
       { url: args.fetch(:solr_url) },
       args.fetch(:cdm_endpoint),

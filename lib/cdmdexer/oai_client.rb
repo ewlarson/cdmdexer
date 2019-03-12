@@ -1,7 +1,7 @@
 
 require 'json'
 require 'http'
-module CDMBL
+module CDMDEXER
     class OaiClient
       attr_reader :base_url, :client
       def initialize(base_url: '', client: HTTP)

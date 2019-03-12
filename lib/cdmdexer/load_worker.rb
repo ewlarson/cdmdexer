@@ -1,5 +1,5 @@
 require 'sidekiq'
-module CDMBL
+module CDMDEXER
   # Load Records into a solr index
   class LoadWorker
     include Sidekiq::Worker

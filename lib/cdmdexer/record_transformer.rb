@@ -1,4 +1,4 @@
-module CDMBL
+module CDMDEXER
   class RecordTransformer
     attr_reader :record, :field_mappings, :field_transformer
     def initialize(record: {},

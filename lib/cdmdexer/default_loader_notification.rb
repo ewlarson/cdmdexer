@@ -1,4 +1,4 @@
-module CDMBL
+module CDMDEXER
   # An example callback
   class DefaultLoaderNotification
     def self.call!(ingestables, deletables)

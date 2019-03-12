@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module CDMBL
+module CDMDEXER
   describe DefaultCallback do
     it 'calls the default callback' do
       # See test_helper.rb for the test implementation where it lives because

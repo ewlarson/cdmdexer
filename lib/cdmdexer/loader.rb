@@ -1,11 +1,11 @@
-module CDMBL
+module CDMDEXER
 
   class Loader
     attr_reader :solr_client, :records, :deletable_ids
 
     def initialize(records: [],
                    deletable_ids: [],
-                   solr_client: CDMBL::DefaultSolr)
+                   solr_client: CDMDEXER::DefaultSolr)
       @solr_client   = solr_client
       @records       = records
       @deletable_ids = deletable_ids

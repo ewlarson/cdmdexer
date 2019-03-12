@@ -1,7 +1,7 @@
 require 'json'
 require 'titleize'
 
-module CDMBL
+module CDMDEXER
   class Transformer
     attr_reader :cdm_records,
                 :oai_endpoint,

@@ -3,7 +3,7 @@
 # require 'webmock/minitest'
 # Sidekiq::Testing.fake!
 
-# module CDMBL
+# module CDMDEXER
 #   describe ExtractWorker do
 #     let(:completed_callback_klass) { Minitest::Mock.new }
 #     let(:extraction_worker_klass) { Minitest::Mock.new }

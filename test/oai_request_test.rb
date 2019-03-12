@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module CDMBL
+module CDMDEXER
   describe OaiRequest do
     let(:client) { Minitest::Mock.new }
     let(:client_response) { Minitest::Mock.new }

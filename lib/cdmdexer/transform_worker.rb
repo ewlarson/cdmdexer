@@ -1,5 +1,5 @@
 require 'sidekiq'
-module CDMBL
+module CDMDEXER
   class TransformWorker
     include Sidekiq::Worker
     attr_reader :records,

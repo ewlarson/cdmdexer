@@ -1,4 +1,4 @@
-module CDMBL
+module CDMDEXER
   module DefaultFilterSetCallback
     def valid?(set: {})
       true
@@ -12,7 +12,7 @@ module CDMBL
 
     def initialize(oai_base_url: :missing_oai_base_url,
                    oai_client: OaiClient,
-                   callback: CDMBL::DefaultSetFilterCallback.new)
+                   callback: CDMDEXER::DefaultSetFilterCallback.new)
       @oai_base_url = oai_base_url
       @oai_client   = oai_client
       @callback     = callback

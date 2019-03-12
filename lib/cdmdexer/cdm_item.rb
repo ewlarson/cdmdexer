@@ -1,4 +1,4 @@
-module CDMBL
+module CDMDEXER
   class CdmItem
     attr_reader :cdm_endpoint,
                 :record,
@@ -10,7 +10,7 @@ module CDMBL
     def initialize(record: :MISSING_RECORD,
                    cdm_endpoint: :MISSING_ENDPOINT,
                    cdm_api_klass: CONTENTdmAPI::Item,
-                   cdm_notification_klass: CDMBL::CdmNotification)
+                   cdm_notification_klass: CDMDEXER::CdmNotification)
       @record                 = record
       @collection, @id        = record['id'].split(':')
       @cdm_endpoint           = cdm_endpoint

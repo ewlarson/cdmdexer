@@ -2,7 +2,7 @@ require 'test_helper'
 require 'sidekiq/testing'
 Sidekiq::Testing.fake!
 
-module CDMBL
+module CDMDEXER
   describe ETLWorker do
     let(:etl_worker_klass) { Minitest::Mock.new }
     let(:oai_request_klass) { Minitest::Mock.new }

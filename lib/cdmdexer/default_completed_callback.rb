@@ -1,4 +1,4 @@
-module CDMBL
+module CDMDEXER
   # An example callback
   class DefaultCompletedCallback
     def self.call!(solr_client)

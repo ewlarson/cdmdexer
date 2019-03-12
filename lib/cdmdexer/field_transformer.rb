@@ -1,6 +1,6 @@
 require 'hash_at_path'
 
-module CDMBL
+module CDMDEXER
   class FieldTransformer
     extend Forwardable
     def_delegators :@field_mapping, :origin_path, :dest_path, :formatters

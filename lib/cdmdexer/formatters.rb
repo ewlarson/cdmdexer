@@ -2,7 +2,7 @@ require 'titleize'
 require 'json'
 require 'net/http'
 # A handful of very simple formatters to clean up CONTENTdm API metadata
-module CDMBL
+module CDMDEXER
 
 
   class GeoNameID

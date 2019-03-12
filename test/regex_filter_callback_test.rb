@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module CDMBL
+module CDMDEXER
   describe RegexFilterCallback do
 
     describe 'when no field is specified' do

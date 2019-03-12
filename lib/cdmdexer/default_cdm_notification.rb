@@ -1,4 +1,4 @@
-module CDMBL
+module CDMDEXER
   # An example callback
   class DefaultCdmNotification
     def self.call!(collection, id, endpoint)

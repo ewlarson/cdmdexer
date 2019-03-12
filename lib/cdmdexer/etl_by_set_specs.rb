@@ -1,4 +1,4 @@
-module CDMBL
+module CDMDEXER
   class ETLBySetSpecs
     attr_reader :set_specs, :etl_config, :etl_worker_klass
     def initialize(set_specs: [:missing_setspec],

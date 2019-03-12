@@ -1,6 +1,6 @@
 require 'rsolr'
 
-module CDMBL
+module CDMDEXER
   # Commnicate with Solr: add / delete stuff
   class DefaultSolr
     attr_reader :url, :client

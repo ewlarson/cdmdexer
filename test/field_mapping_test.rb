@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module CDMBL
+module CDMDEXER
   describe FieldMapingTest do
     describe 'when it is given a hash with string keys' do
       it 'symbolizes these keys' do
@@ -13,9 +13,9 @@ module CDMBL
 
     describe 'when it is givin an array of formatters in string format' do
       it 'constantizes these formatters' do
-        stringy_formatters = { formatters: ['CDMBL::StripFormatter', 'CDMBL::IDFormatter'] }
+        stringy_formatters = { formatters: ['CDMDEXER::StripFormatter', 'CDMDEXER::IDFormatter'] }
         FieldMapping.new(config: stringy_formatters).formatters.must_equal(
-          [CDMBL::StripFormatter, CDMBL::IDFormatter]
+          [CDMDEXER::StripFormatter, CDMDEXER::IDFormatter]
         )
       end
     end
@@ -33,7 +33,7 @@ module CDMBL
 
       it 'sets a default formatter' do
         mapping = FieldMapping.new(config: {})
-      FieldMapping.new(config: {}).formatters.must_equal([CDMBL::DefaultFormatter])
+      FieldMapping.new(config: {}).formatters.must_equal([CDMDEXER::DefaultFormatter])
       end
     end
   end

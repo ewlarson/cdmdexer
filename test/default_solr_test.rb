@@ -1,5 +1,5 @@
 require 'test_helper'
-module CDMBL
+module CDMDEXER
   describe SolrClient do
     let(:client) { Minitest::Mock.new }
     let(:connection) { Minitest::Mock.new }

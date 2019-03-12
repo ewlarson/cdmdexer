@@ -1,4 +1,4 @@
-module CDMBL
+module CDMDEXER
   # An example callback
   class DefaultOaiNotification
     def self.call!(location)

@@ -1,4 +1,4 @@
-module CDMBL
+module CDMDEXER
   class FieldMapping
     attr_reader :config
     def initialize(config: {})

@@ -2,7 +2,7 @@ require 'test_helper'
 require 'sidekiq/testing'
 Sidekiq::Testing.fake!
 
-module CDMBL
+module CDMDEXER
   describe LoadWorker do
     let(:solr_config) { { blah: 'blah' } }
     let(:records) { [{ foo: 'bar' }, { foo: 'baz' }] }

@@ -1,7 +1,7 @@
 require 'hash_at_path'
 require 'json'
 
-module CDMBL
+module CDMDEXER
   # Light wrapper around OAI requests
   # Enhances OAI responses with handles sets, records, etc and adds a little
   # extra value to their data with a keyed set lookup, filters for deleted
@@ -92,7 +92,7 @@ module CDMBL
     end
 
     def request(location)
-      CDMBL::OaiNotification.call!(location)
+      CDMDEXER::OaiNotification.call!(location)
       Hash.from_xml(client.get_response(URI(location)).body)
     end
   end

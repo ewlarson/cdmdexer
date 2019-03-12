@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module CDMBL
+module CDMDEXER
   describe RecordTransformer do
     let(:field_transformer) { Minitest::Mock.new }
     let(:field_transformer_object) { Minitest::Mock.new }

@@ -1,17 +1,17 @@
-[![Build Status](https://travis-ci.org/UMNLibraries/cdmbl.svg?branch=master)](https://travis-ci.org/UMNLibraries/cdmbl)
+[![Build Status](https://travis-ci.org/UMNLibraries/cdmdexer.svg?branch=master)](https://travis-ci.org/UMNLibraries/cdmdexer)
 
-# CDMBL: CONTENTdm on Blacklight
+# CDMDEXER: CONTENTdm on Blacklight
 
 Use [Blacklight](https://github.com/projectblacklight/blacklight) as a front end for your CONTENTdm instance.
 
-At the moment, CDMBL consists only of a micro [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) system dedicated to extracting metadata records from a CONTENTdm instance (using the [CONTENTdm API gem](https://github.com/UMNLibraries/contentdm_api), transforming them into Solr documents, and loading them into Solr.
+At the moment, CDMDEXER consists only of a micro [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) system dedicated to extracting metadata records from a CONTENTdm instance (using the [CONTENTdm API gem](https://github.com/UMNLibraries/contentdm_api), transforming them into Solr documents, and loading them into Solr.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'cdmbl'
+gem 'cdmdexer'
 ```
 
 And then execute:
@@ -20,12 +20,12 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install cdmbl
+    $ gem install cdmdexer
 
-Add the CDMBL rake task to your project Rakefile:
+Add the CDMDEXER rake task to your project Rakefile:
 
 ```ruby
-require 'cdmbl/rake_task'
+require 'cdmdexer/rake_task'
 ```
 
 ### GeoNames (optional)
@@ -41,7 +41,7 @@ export export GEONAMES_USER="yourusernamehere"
 
 Run the ingester
 
-rake cdmbl:batch[solr_url,oai_endpoint,cdm_endpoint,set_spec, batch_size, max_compounds]
+rake cdmdexer:batch[solr_url,oai_endpoint,cdm_endpoint,set_spec, batch_size, max_compounds]
 
 |Argument| Definition|
 |--:|---|
@@ -55,7 +55,7 @@ rake cdmbl:batch[solr_url,oai_endpoint,cdm_endpoint,set_spec, batch_size, max_co
 For example:
 
 ```ruby
-rake "cdmbl:ingest[http://solr:8983/solr/foo-bar-core, https://server16022.contentdm.oclc.org/oai/oai.php, https://server16022.contentdm.oclc.org/dmwebservices/index.php, 2015-01-01]"
+rake "cdmdexer:ingest[http://solr:8983/solr/foo-bar-core, https://server16022.contentdm.oclc.org/oai/oai.php, https://server16022.contentdm.oclc.org/dmwebservices/index.php, 2015-01-01]"
 ```
 
 ### Custom Rake Tasks
@@ -63,9 +63,9 @@ rake "cdmbl:ingest[http://solr:8983/solr/foo-bar-core, https://server16022.conte
 You might also create your own rake task to run your modified field transformers:
 
 ```ruby
-require 'cdmbl'
+require 'cdmdexer'
 
-namespace :cdmbl do
+namespace :cdmdexer do
   desc "ingest batches of records"
   ##
   # e.g. rake mdl_ingester:ingest[2015-09-14, 2]
@@ -79,13 +79,13 @@ namespace :cdmbl do
         batch_size: (args[:batch_size]) ? args[:batch_size] : 30,
         solr_config: solr_config
       }
-    CDMBL::ETLWorker.perform_async(config)
+    CDMDEXER::ETLWorker.perform_async(config)
   end
 end
 ```
 ### Your Own Custom Solr Field Mappings (see above code snippet)
 
-The default CONTENTdm to Solr field transformation rules may be overriden by calling the CDMBL::ETLWorker (a [Sidekiq worker](https://github.com/mperham/sidekiq)) directly. These rules may be found in the default_mappings method of the [CDMBL::Transformer Class](https://github.com/UMNLibraries/cdmbl/blob/master/lib/cdmbl/transformer.rb).
+The default CONTENTdm to Solr field transformation rules may be overriden by calling the CDMDEXER::ETLWorker (a [Sidekiq worker](https://github.com/mperham/sidekiq)) directly. These rules may be found in the default_mappings method of the [CDMDEXER::Transformer Class](https://github.com/UMNLibraries/cdmdexer/blob/master/lib/cdmdexer/transformer.rb).
 
 The transformer expects mappings in the following format:
 
@@ -100,11 +100,11 @@ end
 |--:|---|
 |dest_path| The 'destination path' is the name of the field you will be sending to Solr for this field mapping. |
 |origin_path| Where to get the field data from the original record for this mapping. |
-|formatters| [Formatters](https://github.com/UMNLibraries/cdmbl/blob/master/lib/cdmbl/formatters.rb) perform tasks such as stripping white space or splitting CONTENTdm multi-valued fields (delimited by semicolons) into JSON arrays. |
+|formatters| [Formatters](https://github.com/UMNLibraries/cdmdexer/blob/master/lib/cdmdexer/formatters.rb) perform tasks such as stripping white space or splitting CONTENTdm multi-valued fields (delimited by semicolons) into JSON arrays. |
 
 **Note:** The first formatter receives the value found at the declared `origin_path`. Each formatter declared after the initial formatter will receive a value produced by the preceding formatter.
 
-Formatters are very simple stateless classes that take a value, do something to it, and respond with a modified version of this value via a class method called `format`. Examples of other formatters may be found in the [Formatters file](https://github.com/UMNLibraries/cdmbl/blob/master/lib/cdmbl/formatters.rb). For Example:
+Formatters are very simple stateless classes that take a value, do something to it, and respond with a modified version of this value via a class method called `format`. Examples of other formatters may be found in the [Formatters file](https://github.com/UMNLibraries/cdmdexer/blob/master/lib/cdmdexer/formatters.rb). For Example:
 
 ```ruby
   class SplitFormatter
@@ -117,17 +117,17 @@ Formatters are very simple stateless classes that take a value, do something to 
 You might also want to simply override some of the default mappings or add your own:
 
 ```ruby
-mappings = CDMBL::Transformer.default_mappings.merge(your_custom_field_mappings)
+mappings = CDMDEXER::Transformer.default_mappings.merge(your_custom_field_mappings)
 ```
 ## A Custom Post-indexing Callback
 
-If you would like to perform some action (e.g. send an email) following the completion of the CDMBL indexing process, you may declare your own callback hook (anything with "Callback" in the class name declared within the CDMBL module space will be used). To do so in Rails, create a Rails initializer file `config/initializers/cdmbl.rb`:
+If you would like to perform some action (e.g. send an email) following the completion of the CDMDEXER indexing process, you may declare your own callback hook (anything with "Callback" in the class name declared within the CDMDEXER module space will be used). To do so in Rails, create a Rails initializer file `config/initializers/cdmdexer.rb`:
 
 ```ruby
-module CDMBL
+module CDMDEXER
   class Callback
     def self.call!
-      Rails.logger.info("My Custom CDMBL Callback")
+      Rails.logger.info("My Custom CDMDEXER Callback")
     end
   end
 end
@@ -140,7 +140,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/UMNLibraries/cdmbl. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/UMNLibraries/cdmdexer. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -149,4 +149,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/UMNLib
 ## TODO
 
 * Make StripFormatter the default formatter so it doesn't need to be declared for every field
-* Re-brand project: CONTENTdm Indexer. CDMBL doesn't necessarily require Blacklight. Moreover only handles indexing.
+* Re-brand project: CONTENTdm Indexer. CDMDEXER doesn't necessarily require Blacklight. Moreover only handles indexing.

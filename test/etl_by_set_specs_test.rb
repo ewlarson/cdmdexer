@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module CDMBL
+module CDMDEXER
   describe ETLBySetSpecs do
     it 'iterates through an array of set_specs and launches workers for each' do
       worker = Minitest::Mock.new

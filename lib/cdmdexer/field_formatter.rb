@@ -1,4 +1,4 @@
-module CDMBL
+module CDMDEXER
   class FieldFormatter
     attr_reader :value, :formatters
     def initialize(value: {}, formatters: [DefaultFormatter])

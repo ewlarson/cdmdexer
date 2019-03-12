@@ -1,4 +1,4 @@
-module CDMBL
+module CDMDEXER
   # Search an OAI ListSets field using a regular expression
   class RegexFilterCallback
     attr_reader :field, :pattern, :inclusive

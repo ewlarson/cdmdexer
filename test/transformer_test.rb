@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module CDMBL
+module CDMDEXER
 
   describe Transformer do
     let(:cdm_records) { [{'title' => 'The Three-Body Problem', 'id' => 'foo:123'}] }
@@ -137,7 +137,7 @@ module CDMBL
 
           transformation =  Transformer.new(cdm_records: records, field_mappings: mappings, cache_klass: FakeCache, oai_request_klass: oai_request_klass)
           err = ->{ transformation.records }.must_raise RuntimeError
-          err.message.must_equal 'Mapping Error:{:dest_path=>"has_children", :origin_path=>"has_children", :formatters=>[CDMBL::StripFormatter]} Error:undefined method `strip\' for true:TrueClass'
+          err.message.must_equal 'Mapping Error:{:dest_path=>"has_children", :origin_path=>"has_children", :formatters=>[CDMDEXER::StripFormatter]} Error:undefined method `strip\' for true:TrueClass'
       end
     end
   end

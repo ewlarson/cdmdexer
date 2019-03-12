@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module CDMBL
+module CDMDEXER
   describe FieldFormatter do
     it 'does nothing when no formatters have been specified' do
       formatter = FieldFormatter.new(value: {foo: 'bar'})

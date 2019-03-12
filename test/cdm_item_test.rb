@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module CDMBL
+module CDMDEXER
   describe CdmItemTest do
     it '' do
       record = { 'id' => 'fooCol:123' }
