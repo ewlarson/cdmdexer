@@ -53,6 +53,7 @@ module CDMDEXER
 
       @metadata ||= cdm_api_klass.new(base_url: cdm_endpoint,
                                       collection: collection,
+                                      with_compound: false,
                                       id: id).metadata
     end
   end
