@@ -17,7 +17,7 @@ module CDMDEXER
       records.map do |record|
         cdm_item_klass.expect :new, cdm_item_obj, [record: record, cdm_endpoint: 'example.com']
         cdm_item_obj.expect :page, record['page'], []
-        cdm_item_obj.expect :metadata, record, []
+        cdm_item_obj.expect :to_h, record, []
       end
 
       # Transformer Mocks
