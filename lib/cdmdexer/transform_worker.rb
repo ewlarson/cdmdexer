@@ -44,7 +44,7 @@ module CDMDEXER
     end
 
     def transformer_worker_klass
-      @transformer_worker_klass ||= TransformerWorker
+      @transformer_worker_klass ||= TransformWorker
     end
 
     private

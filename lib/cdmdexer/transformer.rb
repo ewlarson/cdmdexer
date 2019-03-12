@@ -33,7 +33,7 @@ module CDMDEXER
     def sets
       @oai_request ||=
         cache_klass.cache.fetch("cdmdexer_sets", expires_in: 10.minutes) do
-          oai_request_klass.new(endpoint_url: oai_endpoint).sets
+          oai_request_klass.new(endpoint_url: oai_endpoint).set_lookup
         end
     end
 
