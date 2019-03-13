@@ -71,7 +71,6 @@ module CDMDEXER
       load_worker_klass.verify
       transformer_worker_klass.verify
 
-      TransformWorker.drain
     end
   end
 end

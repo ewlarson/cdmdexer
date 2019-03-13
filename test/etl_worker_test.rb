@@ -66,7 +66,6 @@ module CDMDEXER
         'solr_config' => { blah: 'blah' }
       }
       worker = ETLWorker.perform_async(config)
-      ETLWorker.drain
     end
   end
 end
