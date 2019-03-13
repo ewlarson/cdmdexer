@@ -55,11 +55,12 @@ module CDMDEXER
     end
 
     def first_page_id
-      (page.first || {})['id']
+      (page.first || {}).fetch('id', '').split(':').last
     end
 
     def to_compound(page, i)
-      page.merge!(
+      # raise "#{collection}:#{page['pageptr']}".inspect
+      page.merge(
         # Child id is a combo of the page id and parent collection
         'id' => "#{collection}:#{page['pageptr']}",
         'parent_id' => record['id'],
@@ -69,16 +70,20 @@ module CDMDEXER
     end
 
     def primary_record
-      cdm_notification_klass.call!(collection, id, cdm_endpoint)
-
       @primary_record ||= request(id)
     end
 
+    # CDM's id format is collection/id. We use collection:id
+    def to_solr_id(record)
+      record.merge('id' => record['id'].split('/').join(':'))
+    end
+
     def request(id)
-      cdm_api_klass.new(base_url: cdm_endpoint,
+      cdm_notification_klass.call!(collection, id, cdm_endpoint)
+      to_solr_id(cdm_api_klass.new(base_url: cdm_endpoint,
                         collection: collection,
                         with_compound: false,
-                        id: id).metadata
+                        id: id).metadata)
     end
   end
 end
