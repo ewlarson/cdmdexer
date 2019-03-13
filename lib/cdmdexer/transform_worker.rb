@@ -79,10 +79,9 @@ module CDMDEXER
     end
 
     def transformed_records
-      @transformation ||=
-        transformer_klass.new(cdm_records: cmd_items.map(&:to_h),
-                              oai_endpoint: oai_endpoint,
-                              field_mappings: field_mappings).records
+      transformer_klass.new(cdm_records: cmd_items.map(&:to_h),
+                            oai_endpoint: oai_endpoint,
+                            field_mappings: field_mappings).records
     end
 
     def complete_records
