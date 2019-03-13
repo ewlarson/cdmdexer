@@ -31,7 +31,7 @@ module CDMDEXER
         oai_request_obj.expect :sets_lookup, { 'foo' => { bar: 'ba' } }, []
 
         records = Transformer.new(cdm_records: cdm_records, cache_klass: FakeCache, oai_request_klass: oai_request_klass).records
-        records.must_equal [{"id"=>"foo:123", "setspec_ssi"=>"foo:123", "title_tesi"=>"The Three-Body Problem", "title_ssi"=>"The Three-Body Problem", "title_sort"=>"The Three-Body Problem", "title_unstem_search"=>"The Three-Body Problem"}]
+        records.must_equal [{"id"=>"foo:123", "setspec_ssi"=>"foo", "title_tesi"=>"The Three-Body Problem", "title_ssi"=>"The Three-Body Problem", "title_sort"=>"The Three-Body Problem", "title_unstem_search"=>"The Three-Body Problem"}]
       end
     end
 

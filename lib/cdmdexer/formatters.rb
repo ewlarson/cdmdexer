@@ -120,7 +120,7 @@ module CDMDEXER
 
   class AddSetSpecFormatter
     def self.format(value)
-      value.merge('setSpec' => value['id'].split('/').first)
+      value.merge('setSpec' => value['id'].split(':').first)
     end
   end
 
