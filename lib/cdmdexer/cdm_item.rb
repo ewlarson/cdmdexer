@@ -19,24 +19,44 @@ module CDMDEXER
     end
 
     def to_h
-      @to_h ||=
-        # Keep the record metadata we have. It will include the compoud
-        # data such as parent_id
-        record.merge(metadata.merge(
-          'page' => page,
-          # When an item has pages, these pages are resubmitted to CdmItem
-          # as records in order to get their full metadata. But we want to
-          # remember that they are actually secondary / child pages
-          'record_type' => record.fetch('record_type', 'primary')
-        ))
+      # Preserve the record hash. It may contain compound data that has been
+      # resubmitted here by the transformer_worker as it recurses through
+      # compounds in order to extract their full metadata
+      @to_h ||= record.merge(metadata)
     end
 
     def page
-      metadata.fetch('page', [])
-              .each_with_index.map { |page, i| to_compound(page, i) }
+      primary_record.fetch('page', [])
+                    .each_with_index.map { |page, i| to_compound(page, i) }
     end
 
     private
+
+    def metadata
+      if first_page_id
+        # There are cases when we will not want to have to query for the
+        #  metadata of the first item of a compound. So, include the metadata of
+        # the first page in its parent record metadata.
+        #
+        # Use-case: you want to grab a thumbnail for the compound record. In
+        # this case, you'll need the format field of the first record in order
+        # to determine which thumbnail generation mechanism to use (e.g. CDM
+        # thumb vs getting a thumbnail for a video from Kaltura)
+        primary_record.merge('first_page' => request(first_page_id))
+      else
+        primary_record
+      end.merge(
+        'page' => page,
+        # When an item has pages, these pages are resubmitted to CdmItem
+        # as records in order to get their full metadata. But we want to
+        # remember that they are actually secondary / child pages
+        'record_type' => record.fetch('record_type', 'primary')
+      )
+    end
+
+    def first_page_id
+      (page.first || {})['id']
+    end
 
     def to_compound(page, i)
       page.merge!(
@@ -48,13 +68,17 @@ module CDMDEXER
       )
     end
 
-    def metadata
+    def primary_record
       cdm_notification_klass.call!(collection, id, cdm_endpoint)
 
-      @metadata ||= cdm_api_klass.new(base_url: cdm_endpoint,
-                                      collection: collection,
-                                      with_compound: false,
-                                      id: id).metadata
+      @primary_record ||= request(id)
+    end
+
+    def request(id)
+      cdm_api_klass.new(base_url: cdm_endpoint,
+                        collection: collection,
+                        with_compound: false,
+                        id: id).metadata
     end
   end
 end
