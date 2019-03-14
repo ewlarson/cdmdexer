@@ -14,6 +14,16 @@ module CDMDEXER
       </OAI_PMH>'
     }
 
+    let(:header_response) {
+      '<OAI_PMH>
+        <ListIdentifiers>
+          <header>
+            <identifier>blerg.com:foocollection1/123</identifier>
+          </header>
+        </ListIdentifiers>
+      </OAI_PMH>'
+    }
+
     let(:header_response_with_status) {
       '<OAI_PMH>
         <ListIdentifiers>
@@ -28,6 +38,16 @@ module CDMDEXER
           </header>
         </ListIdentifiers>
       </OAI_PMH>'
+    }
+
+    let(:empty_response) {
+      '<OAI_PMH>
+      <ListIdentifiers>
+        <error code="noRecordsMatch">
+            The combination of the values of the from, until, set and metadataPrefix arguments results in an empty list.
+        </error>
+      </ListIdentifiers>
+    </OAI_PMH>'
     }
 
     let(:resumption_token_response) {
@@ -187,6 +207,24 @@ module CDMDEXER
                           client: client
       request.deletable_ids.must_equal(["foo:1234"])
       request.updatables.must_equal([{"identifier"=>"blerg.com:foo/123", :id=>"foo:123"}, {"identifier"=>"blerg.com:foo/1235", :id=>"foo:1235"}])
+    end
+
+    describe 'when given and empty response' do
+      it 'returns empty values' do
+        client.expect :get_response, client_response, [URI('http://example.com?verb=ListSets')]
+        client.expect :get_response, client_response, [URI('http://example.com?verb=ListIdentifiers&metadataPrefix=oai_dc')]
+        client_response.expect :body, empty_response
+        client_response.expect :body, empty_response
+        request = OaiRequest.new(endpoint_url: 'http://example.com', client: client)
+        request.sets.must_equal []
+        request.records.must_equal []
+        request.set_lookup.must_equal({})
+        request.next_resumption_token.must_equal nil
+        request.deletable_ids.must_equal []
+        request.updatables.must_equal []
+        client.verify
+        client_response.verify
+      end
     end
   end
 end

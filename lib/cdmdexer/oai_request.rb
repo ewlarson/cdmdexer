@@ -62,7 +62,7 @@ module CDMDEXER
     # Ensure results are a single level array
     # (single row sets, records, etc)
     def force_array(result)
-      [result].flatten
+      [result].flatten.compact
     end
 
     def to_key(set)
