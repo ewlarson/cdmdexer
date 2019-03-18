@@ -77,7 +77,7 @@ module CDMDEXER
       if next_resumption_token && is_recursive
         etl_worker_klass.perform_async(next_config)
       else
-        completed_callback_klass.call!(solr_config)
+        completed_callback_klass.call!(config)
       end
     end
 
