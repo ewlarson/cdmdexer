@@ -22,6 +22,21 @@ module CDMDEXER
       field_mapping.verify
     end
 
-  end
+    describe 'when a field transformation results in an error' do
+      it 'returns the record id along with the error message' do
+        class BadFormatterWut
+          def self.format(value)
+            raise 'wuuuuut'
+          end
+        end
 
+        config = { dest_path: 'title', origin_path: 'title', formatters: [BadFormatterWut] }
+        field_mapping = FieldMapping.new(config: config)
+        record = {'title' => 'foo' }
+        transformer = FieldTransformer.new(field_mapping: field_mapping, record: record)
+        err = ->{ transformer.reduce }.must_raise RuntimeError
+        err.message.must_equal "FieldTransformer Mapping Error - Record: MISSING_RECORD_ID Mapping: {:dest_path=>\"title\", :origin_path=>\"title\", :formatters=>[CDMDEXER::BadFormatterWut]} Error:wuuuuut"
+      end
+    end
+  end
 end

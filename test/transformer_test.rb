@@ -137,7 +137,8 @@ module CDMDEXER
 
           transformation =  Transformer.new(cdm_records: records, field_mappings: mappings, cache_klass: FakeCache, oai_request_klass: oai_request_klass)
           err = ->{ transformation.records }.must_raise RuntimeError
-          err.message.must_equal 'Mapping Error:{:dest_path=>"has_children", :origin_path=>"has_children", :formatters=>[CDMDEXER::StripFormatter]} Error:undefined method `strip\' for true:TrueClass'
+          puts err.message.inspect
+          err.message.must_equal "FieldTransformer Mapping Error - Record: foo/5123 Mapping: {:dest_path=>\"has_children\", :origin_path=>\"has_children\", :formatters=>[CDMDEXER::StripFormatter]} Error:undefined method `strip' for true:TrueClass"
       end
     end
   end
