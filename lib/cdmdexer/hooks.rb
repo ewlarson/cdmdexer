@@ -10,6 +10,8 @@ module CDMDEXER
       hook(pattern: name.to_s, default: DefaultLoaderNotification)
     elsif name.to_s == 'CdmNotification'
       hook(pattern: name.to_s, default: DefaultCdmNotification)
+    elsif name.to_s == 'CdmError'
+      hook(pattern: name.to_s, default: DefaultCdmError)
     end
   end
 
