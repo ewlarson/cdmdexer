@@ -116,19 +116,51 @@ You might also want to simply override some of the default mappings or add your 
 ```ruby
 mappings = CDMDEXER::Transformer.default_mappings.merge(your_custom_field_mappings)
 ```
-## A Custom Post-indexing Callback
 
-If you would like to perform some action (e.g. send an email) following the completion of the CDMDEXER indexing process, you may declare your own callback hook (anything with "Callback" in the class name declared within the CDMDEXER module space will be used). To do so in Rails, create a Rails initializer file `config/initializers/cdmdexer.rb`:
+### Callbacks
+
+CDMDEXER comes with a set of lifecycle hooks that are called at various points during the ETL process. Downstream applications may want to take advantage of these in order to perform logging or notification tasks.  Create a Rails initializer at `config/initializers/cdmdexer.rb` in order to take advantage of these hooks.
+
+**IMPORTANT NOTE:**  Errors (except for http timeouts) are **not raised** but are rather sent to the `CdmError` notification hook below. This prevents sidekiq from piling-up with errors that will never resolve via retries but still allows you to capture the error and be notified of error events.
+
+E.g.:
 
 ```ruby
 module CDMDEXER
-  class Callback
-    def self.call!
-      Rails.logger.info("My Custom CDMDEXER Callback")
+  class CompletedCallback
+    def self.call!(config)
+      # e.g. commit records  - ::SolrClient.new.commit
+      Rails.logger.info "Processing last batch for: #{config['set_spec']}"
+    end
+  end
+
+  class OaiNotification
+    def self.call!(location)
+      Rails.logger.info "CDMDEXER: Requesting: #{location}"
+    end
+  end
+
+  class CdmNotification
+    def self.call!(collection, id, endpoint)
+      Rails.logger.info "CDMDEXER: Requesting: #{collection}:#{id}"
+    end
+  end
+
+  class LoaderNotification
+    def self.call!(ingestables, deletables)
+      Rails.logger.info "CDMDEXER: Loading #{ingestables.length} records and deleting #{deletables.length}"
+    end
+  end
+
+  class CdmError
+    def self.call!(error)
+      Rails.logger.info "CDMDEXER: #{error}"
+      # e.g. push error to a slack channel or send an email alert
     end
   end
 end
 ```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
