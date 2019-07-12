@@ -120,14 +120,20 @@ module CDMDEXER
         transformation['keyword_ssim'].must_equal ["Bar", "Hennepin County", "Lakes", "Minnesota"]
     end
 
-    describe 'when a field mapping produces an error' do
+    describe 'when a field mapping produces an http related error' do
       it "raises an error along with the field mapping configuration" do
           records = [{
                       'id' => 'foo/5123',
                       'has_children' => true
                   }]
 
-          mappings = [{dest_path: 'has_children', origin_path: 'has_children', formatters: [StripFormatter]}]
+	  class BadFormatterWut
+	    def self.format(value)
+	      raise 'wuuuuut ConnectionError'
+	    end
+	  end
+
+          mappings = [{dest_path: 'has_children', origin_path: 'has_children', formatters: [BadFormatterWut]}]
 
           oai_endpoint = 'example.com'
           oai_request_klass = Minitest::Mock.new
@@ -138,7 +144,7 @@ module CDMDEXER
           transformation =  Transformer.new(cdm_records: records, field_mappings: mappings, cache_klass: FakeCache, oai_request_klass: oai_request_klass)
           err = ->{ transformation.records }.must_raise RuntimeError
           puts err.message.inspect
-          err.message.must_equal "FieldTransformer Mapping Error - Record: foo/5123 Mapping: {:dest_path=>\"has_children\", :origin_path=>\"has_children\", :formatters=>[CDMDEXER::StripFormatter]} Error:undefined method `strip' for true:TrueClass"
+          err.message.must_equal "Record Transformation Error (Record foo/5123): Mapping: {:dest_path=>\"has_children\", :origin_path=>\"has_children\", :formatters=>[CDMDEXER::BadFormatterWut]} Error:wuuuuut ConnectionError"
       end
     end
   end

@@ -4,12 +4,11 @@ module CDMDEXER
   class FieldTransformer
     extend Forwardable
     def_delegators :@field_mapping, :origin_path, :dest_path, :formatters
-    attr_reader :field_value, :field_mapping, :formatter_klass, :record_id
+    attr_reader :field_value, :field_mapping, :formatter_klass
     def initialize(field_mapping: FieldMapping.new,
                    record: {},
                    formatter_klass: FieldFormatter)
       @field_mapping   = field_mapping
-      @record_id       = record.fetch('id', 'MISSING_RECORD_ID')
       @field_value     = compact(record.at_path(origin_path))
       @formatter_klass = formatter_klass
     end
@@ -36,7 +35,7 @@ module CDMDEXER
     def transform_field
       formatter_klass.new(value: field_value, formatters: formatters).format!
     rescue StandardError => e
-      raise "FieldTransformer Mapping Error - Record: #{record_id} Mapping: #{field_mapping.config} Error:#{e.message}"
+      raise "Mapping: #{field_mapping.config} Error:#{e.message}"
     end
   end
 end

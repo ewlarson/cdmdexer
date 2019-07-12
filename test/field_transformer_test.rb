@@ -35,7 +35,7 @@ module CDMDEXER
         record = {'title' => 'foo' }
         transformer = FieldTransformer.new(field_mapping: field_mapping, record: record)
         err = ->{ transformer.reduce }.must_raise RuntimeError
-        err.message.must_equal "FieldTransformer Mapping Error - Record: MISSING_RECORD_ID Mapping: {:dest_path=>\"title\", :origin_path=>\"title\", :formatters=>[CDMDEXER::BadFormatterWut]} Error:wuuuuut"
+        err.message.must_equal "Mapping: {:dest_path=>\"title\", :origin_path=>\"title\", :formatters=>[CDMDEXER::BadFormatterWut]} Error:wuuuuut"
       end
     end
   end
