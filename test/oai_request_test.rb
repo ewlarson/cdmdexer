@@ -4,6 +4,7 @@ module CDMDEXER
   describe OaiRequest do
     let(:client) { Minitest::Mock.new }
     let(:client_response) { Minitest::Mock.new }
+    let(:today) { Date.today.strftime('%Y-%m-%d') }
     let(:header_response) {
       '<OAI_PMH>
         <ListIdentifiers>
@@ -31,6 +32,7 @@ module CDMDEXER
             <identifier>blerg.com:foo/123</identifier>
           </header>
           <header status="deleted">
+            <datestamp>2016-10-27</datestamp>
             <identifier>blerg.com:foo/1234</identifier>
           </header>
           <header>
@@ -38,6 +40,29 @@ module CDMDEXER
           </header>
         </ListIdentifiers>
       </OAI_PMH>'
+    }
+
+    let(:header_response_with_mixed_dates) {
+      "<OAI_PMH>
+        <ListIdentifiers>
+          <header>
+            <datestamp>2016-10-27</datestamp>
+            <identifier>blerg.com:foo/123</identifier>
+          </header>
+          <header status=\"deleted\">
+            <datestamp>#{today}</datestamp>
+            <identifier>blerg.com:foo/1239-today</identifier>
+          </header>
+          <header status=\"deleted\">
+            <datestamp>2016-10-27</datestamp>
+            <identifier>blerg.com:foo/126624</identifier>
+          </header>
+          <header>
+            <datestamp>#{today}</datestamp>
+            <identifier>blerg.com:foo/122235-today</identifier>
+          </header>
+        </ListIdentifiers>
+      </OAI_PMH>"
     }
 
     let(:empty_response) {
@@ -198,15 +223,28 @@ module CDMDEXER
       end
     end
 
-    it 'knows the difference between updatable and deletable records' do
+    # it 'knows the difference between updatable and deletable records' do
+    #   client.expect :get_response,
+    #                 client_response,
+    #                 [URI('http://example.com?verb=ListIdentifiers&metadataPrefix=oai_dc')]
+    #   client_response.expect :body, header_response_with_status
+    #   request = OaiRequest.new endpoint_url: 'http://example.com',
+    #                            client: client
+    #   request.deletable_ids.must_equal(["foo:1234"])
+    #   request.updatables.must_equal([{"identifier"=>"blerg.com:foo/123", :id=>"foo:123"}, {"identifier"=>"blerg.com:foo/1235", :id=>"foo:1235"}])
+    # end
+
+    it 'can harvest only records after a provided date' do
       client.expect :get_response,
                     client_response,
                     [URI('http://example.com?verb=ListIdentifiers&metadataPrefix=oai_dc')]
-      client_response.expect :body, header_response_with_status
+      client_response.expect :body, header_response_with_mixed_dates
       request = OaiRequest.new endpoint_url: 'http://example.com',
-                          client: client
-      request.deletable_ids.must_equal(["foo:1234"])
-      request.updatables.must_equal([{"identifier"=>"blerg.com:foo/123", :id=>"foo:123"}, {"identifier"=>"blerg.com:foo/1235", :id=>"foo:1235"}])
+                               client: client,
+                               after_date: 1.week.ago
+
+      request.deletable_ids.must_equal(["foo:1239-today"])
+      request.updatables.must_equal([{"datestamp"=>"2020-10-25", "identifier"=>"blerg.com:foo/122235-today", :id=>"foo:122235-today"}])
     end
 
     describe 'when given and empty response' do
