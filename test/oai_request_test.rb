@@ -32,7 +32,6 @@ module CDMDEXER
             <identifier>blerg.com:foo/123</identifier>
           </header>
           <header status="deleted">
-            <datestamp>2016-10-27</datestamp>
             <identifier>blerg.com:foo/1234</identifier>
           </header>
           <header>
@@ -223,16 +222,16 @@ module CDMDEXER
       end
     end
 
-    # it 'knows the difference between updatable and deletable records' do
-    #   client.expect :get_response,
-    #                 client_response,
-    #                 [URI('http://example.com?verb=ListIdentifiers&metadataPrefix=oai_dc')]
-    #   client_response.expect :body, header_response_with_status
-    #   request = OaiRequest.new endpoint_url: 'http://example.com',
-    #                            client: client
-    #   request.deletable_ids.must_equal(["foo:1234"])
-    #   request.updatables.must_equal([{"identifier"=>"blerg.com:foo/123", :id=>"foo:123"}, {"identifier"=>"blerg.com:foo/1235", :id=>"foo:1235"}])
-    # end
+    it 'knows the difference between updatable and deletable records' do
+      client.expect :get_response,
+                    client_response,
+                    [URI('http://example.com?verb=ListIdentifiers&metadataPrefix=oai_dc')]
+      client_response.expect :body, header_response_with_status
+      request = OaiRequest.new endpoint_url: 'http://example.com',
+                               client: client
+      request.deletable_ids.must_equal(["foo:1234"])
+      request.updatables.must_equal([{"identifier"=>"blerg.com:foo/123", :id=>"foo:123"}, {"identifier"=>"blerg.com:foo/1235", :id=>"foo:1235"}])
+    end
 
     it 'can harvest only records after a provided date' do
       client.expect :get_response,
@@ -244,7 +243,7 @@ module CDMDEXER
                                after_date: 1.week.ago
 
       request.deletable_ids.must_equal(["foo:1239-today"])
-      request.updatables.must_equal([{"datestamp"=>"2020-10-25", "identifier"=>"blerg.com:foo/122235-today", :id=>"foo:122235-today"}])
+      request.updatables.must_equal([{"datestamp"=> today, "identifier"=>"blerg.com:foo/122235-today", :id=>"foo:122235-today"}])
     end
 
     describe 'when given and empty response' do
