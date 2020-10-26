@@ -28,7 +28,8 @@ module CDMDEXER
                                {
                                 endpoint_url: 'http://example.com1',
                                 resumption_token: nil,
-                                set_spec: nil
+                                set_spec: nil,
+                                after_date: false
                                }
                              ]
       oai_request_klass_object.expect :deletable_ids, ['col134:blarg'], []

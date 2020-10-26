@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require 'hash_at_path'
 require 'json'
+require 'time'
 
 module CDMDEXER
   # Light wrapper around OAI requests
@@ -10,16 +13,19 @@ module CDMDEXER
     attr_reader :endpoint_url,
                 :resumption_token,
                 :client,
-                :set_spec
+                :set_spec,
+                :after_date
 
     def initialize(endpoint_url: '',
                    resumption_token: nil,
                    set_spec: nil,
-                   client: Net::HTTP)
+                   client: Net::HTTP,
+                   after_date: false)
       @endpoint_url     = endpoint_url
       @resumption_token = resumption_token
       @client           = client
       @set_spec         = set_spec ? "&set=#{set_spec}" : ''
+      @after_date       = after_date
     end
 
     def records
@@ -44,12 +50,23 @@ module CDMDEXER
     end
 
     def deletable_ids
-      records.select { |record| record['status'] == 'deleted' }
-             .map { |record| record[:id] }
+      records.select do |record|
+        if record['status'] == 'deleted'
+          after_date ? Time.parse(record['datestamp']) >= after_date : true
+        end
+      end.map { |record| record[:id] }
     end
 
     def updatables
-      records.reject { |record| record['status'] == 'deleted' }
+      records.reject do |record|
+        if record['status'] == 'deleted'
+          true
+        elsif after_date && Time.parse(record['datestamp']) < after_date
+          true
+        else
+          false
+        end
+      end
     end
 
     private
