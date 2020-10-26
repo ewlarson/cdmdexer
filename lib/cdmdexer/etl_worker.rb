@@ -38,11 +38,20 @@ module CDMDEXER
       @resumption_token  = config.fetch('resumption_token', nil)
       @batch_size        = config.fetch('batch_size', 5).to_i
       @is_recursive      = config.fetch('is_recursive', true)
+      after_date         = config.fetch('after_date', false)
 
       @oai_request = oai_request_klass.new(
         endpoint_url: oai_endpoint,
         resumption_token: resumption_token,
-        set_spec: config.fetch('set_spec', nil)
+        set_spec: config.fetch('set_spec', nil),
+        # Optionally only select records that have been updated after a
+        # certain date. You may need to manually update a parent record
+        # after updating a child in order to signify to the indexer that
+        # some record in the parent's children has been updated. This indexer
+        # expects to only see parent records in the OAI responses.
+        # The default here is to skip indexing based on date.
+        # Rails example for getting a date: `after_date: 2.weeks.ago`
+        after_date: after_date
       )
 
       run_batch!
