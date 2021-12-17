@@ -30,9 +30,14 @@ require 'cdmdexer/rake_task'
 
 In order to make use of the GeoNames service, you must purchase a [GeoNames Premium Webservices Account](http://www.geonames.org/commercial-webservices.html). If you do not have a `geonam` field in your CONTENTdm schema, you may ignore this instruction. Add your credentials to your shell environment once you have secured a GeoNames user:
 
+
 ```
-# e.g. within your .bash_profile or .zprofile file
-export export GEONAMES_USER="yourusernamehere"
+cp .env.example .env
+nano .env
+
+# Add these vars to the .env file
+GEONAMES_USER=foo
+GEONAMES_TOKEN=bar
 ```
 
 ## Usage
