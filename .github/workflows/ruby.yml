@@ -33,4 +33,7 @@ jobs:
     - name: Run bundler
       run: bundle install
     - name: Run tests
+      env:
+        GEONAMES_USER: ${{ secrets.GEONAMES_USER }}
+        GEONAMES_TOKEN: ${{ secrets.GEONAMES_TOKEN }}
       run: bundle exec rake test
