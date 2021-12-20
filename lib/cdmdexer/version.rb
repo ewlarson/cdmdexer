@@ -1,3 +1,3 @@
 module CDMDEXER
-  VERSION = "0.21.0"
+  VERSION = "0.21.1"
 end
