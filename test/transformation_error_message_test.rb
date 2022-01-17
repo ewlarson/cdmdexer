@@ -20,8 +20,8 @@ module CDMDEXER
         message = 'Blah blah ConnectionError blah'
         messenger = TransformationErrorMessage.new(message: message,
                                                    notification_klass: notifier)
-        err = ->  { messenger.notify }.must_raise RuntimeError
-        err.message.must_equal 'Blah blah ConnectionError blah'
+        err = _{ messenger.notify }.must_raise RuntimeError
+        _(err.message).must_equal 'Blah blah ConnectionError blah'
       end
     end
   end

@@ -31,7 +31,7 @@ module CDMDEXER
         oai_request_obj.expect :sets_lookup, { 'foo' => { bar: 'ba' } }, []
 
         records = Transformer.new(cdm_records: cdm_records, cache_klass: FakeCache, oai_request_klass: oai_request_klass).records
-        records.must_equal [{"id"=>"foo:123", "setspec_ssi"=>"foo", "title_tesi"=>"The Three-Body Problem", "title_ssi"=>"The Three-Body Problem", "title_sort"=>"The Three-Body Problem", "title_unstem_search"=>"The Three-Body Problem"}]
+        _(records).must_equal [{"id"=>"foo:123", "setspec_ssi"=>"foo", "title_tesi"=>"The Three-Body Problem", "title_ssi"=>"The Three-Body Problem", "title_sort"=>"The Three-Body Problem", "title_unstem_search"=>"The Three-Body Problem"}]
       end
     end
 
@@ -55,9 +55,9 @@ module CDMDEXER
       oai_request_obj.expect :sets_lookup, { 'foo' => { bar: 'ba' } }, []
 
       transformation =  Transformer.new(cdm_records: records, field_mappings: field_mappings, cache_klass: FakeCache, oai_request_klass: oai_request_klass).records.first
-      transformation['kaltura_audio_ssi'].must_equal '0_eenv'
-      transformation['kaltura_video_ssi'].must_equal '0_w3vvA'
-      transformation['kaltura_audio_playlist_ssi'].must_equal '0_sdfsdf'
+      _(transformation['kaltura_audio_ssi']).must_equal '0_eenv'
+      _(transformation['kaltura_video_ssi']).must_equal '0_w3vvA'
+      _(transformation['kaltura_audio_playlist_ssi']).must_equal '0_sdfsdf'
     end
 
     it 'transforms table of contents data' do
@@ -75,7 +75,7 @@ module CDMDEXER
       oai_request_obj.expect :sets_lookup, { 'foo' => { bar: 'ba' } }, []
 
       transformation =  Transformer.new(cdm_records: records, field_mappings: field_mappings, cache_klass: FakeCache, oai_request_klass: oai_request_klass).records.first
-      transformation['table_ssim'].must_equal ["First Item", "Second Item", "Third Item"]
+      _(transformation['table_ssim']).must_equal ["First Item", "Second Item", "Third Item"]
     end
 
     it "enriches from GeoNames service" do
@@ -95,8 +95,8 @@ module CDMDEXER
         oai_request_obj.expect :sets_lookup, { 'foo' => { bar: 'ba' } }, []
 
         transformation =  Transformer.new(cdm_records: records, field_mappings: field_mappings, cache_klass: FakeCache, oai_request_klass: oai_request_klass).records.first
-        transformation['coordinates_llsi'].must_equal '46.78111,-92.11806'
-        transformation['placename_ssim'].must_equal ["City of Duluth", "Saint Louis"]
+        _(transformation['coordinates_llsi']).must_equal '46.78111,-92.11806'
+        _(transformation['placename_ssim']).must_equal ["City of Duluth", "Saint Louis"]
     end
 
     it "creates a composite keyword field" do
@@ -117,7 +117,7 @@ module CDMDEXER
         oai_request_obj.expect :sets_lookup, { 'foo' => { bar: 'ba' } }, []
 
         transformation =  Transformer.new(cdm_records: records, field_mappings: field_mappings, cache_klass: FakeCache, oai_request_klass: oai_request_klass).records.first
-        transformation['keyword_ssim'].must_equal ["Bar", "Hennepin County", "Lakes", "Minnesota"]
+        _(transformation['keyword_ssim']).must_equal ["Bar", "Hennepin County", "Lakes", "Minnesota"]
     end
 
     describe 'when a field mapping produces an http related error' do
@@ -142,9 +142,9 @@ module CDMDEXER
           oai_request_obj.expect :sets_lookup, { 'foo' => { bar: 'ba' } }, []
 
           transformation =  Transformer.new(cdm_records: records, field_mappings: mappings, cache_klass: FakeCache, oai_request_klass: oai_request_klass)
-          err = ->{ transformation.records }.must_raise RuntimeError
+          err = _{ transformation.records }.must_raise RuntimeError
           puts err.message.inspect
-          err.message.must_equal "Record Transformation Error (Record foo/5123): Mapping: {:dest_path=>\"has_children\", :origin_path=>\"has_children\", :formatters=>[CDMDEXER::BadFormatterWut]} Error:wuuuuut ConnectionError"
+          _(err.message).must_equal "Record Transformation Error (Record foo/5123): Mapping: {:dest_path=>\"has_children\", :origin_path=>\"has_children\", :formatters=>[CDMDEXER::BadFormatterWut]} Error:wuuuuut ConnectionError"
       end
     end
   end
