@@ -15,19 +15,20 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: ['2.7']
+        ruby-version: ['2.6', '2.7', '3.0']
 
     steps:
       - name: Checkout code repo
         uses: actions/checkout@v2
 
-      - name: Ruby - Set up
+      - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7'
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+          ruby-version: ${{ matrix.ruby-version }}
+
       - name: Run bundler
         run: bundle install
+
       - name: Run tests
         env:
           GEONAMES_USER: ${{ secrets.GEONAMES_USER }}

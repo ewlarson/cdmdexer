@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   # Has.to_jsonl feature for testing and to allow this gem to function
   # independently from a rails app
   spec.add_dependency 'rails', '~> 6.0'
+  spec.add_dependency 'rexml', '~> 3.2'
 
   spec.add_development_dependency 'dotenv-rails', '~> 2.7.6'
   spec.add_development_dependency 'bundler', '~> 2.0'
