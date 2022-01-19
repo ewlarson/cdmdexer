@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'contentdm_api', '~> 0.5.0'
+  spec.add_dependency 'contentdm_api', '~> 0.6.0'
   spec.add_dependency 'hash_at_path', '~> 0.1.6'
   spec.add_dependency 'rsolr', '~> 2.0'
   spec.add_dependency 'sidekiq', '>= 3.5'
