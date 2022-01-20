@@ -66,7 +66,7 @@ module CDMDEXER
         'batch_size' => 2,
         'solr_config' => { blah: 'blah' }
       }
-      worker = ETLWorker.perform_async(config)
+      ETLWorker.perform_async(config)
     end
   end
 end

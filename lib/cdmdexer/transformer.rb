@@ -1,5 +1,6 @@
 require 'json'
 require 'titleize'
+require 'active_support/core_ext/integer/time'
 
 module CDMDEXER
   class Transformer

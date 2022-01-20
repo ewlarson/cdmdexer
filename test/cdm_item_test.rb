@@ -29,7 +29,7 @@ module CDMDEXER
       cdm_item = CdmItem.new(record: compound_record,
                              cdm_endpoint: endpoint,
                              cdm_api_klass: cdm_api_klass)
-      cdm_item.to_h.must_equal(
+      _(cdm_item.to_h).must_equal(
         {
          "id"=>"fooCol:123",
          "page"=>[{"pageptr"=>0, "blah"=>"blah", "id"=>"fooCol:0", "parent_id"=>"fooCol:123", "record_type"=>"secondary", "child_index"=>0}, {"pageptr"=>1, "bar"=>"bar", "id"=>"fooCol:1", "parent_id"=>"fooCol:123", "record_type"=>"secondary", "child_index"=>1}],
@@ -59,7 +59,7 @@ module CDMDEXER
         cdm_item = CdmItem.new(record: record,
                                cdm_endpoint: endpoint,
                                cdm_api_klass: cdm_api_klass)
-        cdm_item.to_h.must_equal({"id"=>"fooCol:123", "record_type"=>"secondary", "foo"=>"bar", "page"=>[]})
+        _(cdm_item.to_h).must_equal({"id"=>"fooCol:123", "record_type"=>"secondary", "foo"=>"bar", "page"=>[]})
         cdm_api_klass.verify
         cdm_api_obj.verify
       end
