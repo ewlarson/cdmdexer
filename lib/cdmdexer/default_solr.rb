@@ -4,7 +4,7 @@ module CDMDEXER
   # Commnicate with Solr: add / delete stuff
   class DefaultSolr
     attr_reader :url, :client
-    def initialize(url: 'http://localhost:8983/solr/core-here', client: RSolr)
+    def initialize(url='http://localhost:8983/solr/blacklight-core', client= RSolr)
       @url    = url
       @client = client
     end
@@ -21,7 +21,7 @@ module CDMDEXER
     end
 
     def connection
-      @connection ||= client.connect url: url
+      @connection ||= client.connect url
     end
 
     def add(records)
