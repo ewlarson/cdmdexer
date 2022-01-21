@@ -19,7 +19,7 @@ module CDMDEXER
                    oai_request_klass: OaiRequest)
       @cdm_records        = cdm_records
       @oai_endpoint       = oai_endpoint
-      @field_mappings     = field_mappings ? field_mappings : default_field_mappings
+      @field_mappings     = default_field_mappings
       @record_transformer = record_transformer
       @cache_klass        = cache_klass
       @oai_request_klass  = oai_request_klass
