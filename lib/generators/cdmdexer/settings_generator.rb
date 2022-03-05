@@ -12,7 +12,7 @@ module Cdmdexer
     EOF
 
     def install_settings
-      copy_file 'settings.yml', '#{Rails.root}/config/settings.yml'
+      copy_file 'settings.yml', 'config/settings.yml'
     end
   end
 end
