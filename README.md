@@ -20,6 +20,10 @@ Or install it yourself as:
 
     $ gem install cdmdexer
 
+Run the cdmdexer install generator. This step will add a `config/settings.yml` file to your local application, containing default Solr field mappings and formatters to your project:
+
+    $ bundle exec rails g cdmdexer:install
+
 Add the CDMDEXER rake task to your project Rakefile:
 
 ```ruby
