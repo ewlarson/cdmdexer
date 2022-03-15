@@ -1,27 +1,28 @@
+# frozen_string_literal: true
+
 require 'rsolr'
 
 module CDMDEXER
   # Commnicate with Solr: add / delete stuff
   class DefaultSolr
     attr_reader :url, :client
-    def initialize(url: 'http://localhost:8983/solr/blacklight-core', client: RSolr)
-      @url    = url
+
+    def initialize(url = 'http://localhost:8983/solr/blacklight-core', client = RSolr)
+      @url    = ENV['SOLR_URL'] || url
       @client = client
     end
 
     def ids(start: 0)
       connection.get('select',
-        :params => { :q => '*:*',
-          :defType => 'edismax',
-          :fl => '',
-          :rows => 10,
-          :start => start
-        }
-      )
+                     params: { q: '*:*',
+                               defType: 'edismax',
+                               fl: '',
+                               rows: 10,
+                               start: start })
     end
 
     def connection
-      @connection ||= client.connect url: url
+      @connection ||= client.connect url: @url
     end
 
     def add(records)
