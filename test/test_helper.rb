@@ -73,6 +73,6 @@ end
 class Settings
   def self.field_mappings
     Config.load_files(File.join(File.dirname(__FILE__),
-                                '../lib/generators/cdmdexer/templates/settings.yml')).field_mappings
+                                '../lib/generators/cdmdexer/templates/cdmdexer.yml')).field_mappings
   end
 end

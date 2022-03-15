@@ -10,8 +10,12 @@ module Cdmdexer
        1. Installs settings.yml into your application's config directory
     EOF
 
+    def add_initializer
+      copy_file 'rails_config.rb', 'config/initializers/rails_config.rb'
+    end
+
     def install_settings
-      copy_file 'settings.yml', 'config/settings.yml'
+      copy_file 'cdmdexer.yml', 'config/initializers/cdmdexer.yml'
     end
   end
 end
